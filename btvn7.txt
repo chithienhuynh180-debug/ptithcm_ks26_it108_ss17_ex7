@@ -1,0 +1,29 @@
+Phần 1: Phân tích vấn đề
+
+1. 4 điểm sai
+
+- DNS: phải hỏi DNS đổi tên miền thành IP trước, không gửi thẳng URL tới server được.
+- TCP/TLS: HTTPS phải bắt tay TCP 3 bước và TLS mới tải được HTML, không tự kết nối.
+- Mã lỗi: database sập là lỗi server nên phải là 500, không phải 404. Việc nói hồ sơ bị xóa cũng không có bằng chứng.
+- Tab Elements: chỉ sửa DOM trong RAM máy mình, không sửa được database.
+
+2. Vì sao là 500 không phải 404
+
+- 500 là server bị lỗi, database sập đúng trường hợp này. 404 là không tìm thấy URL hoặc tài nguyên, mà trang vẫn tồn tại.
+- Báo nhầm 404 thì bệnh nhân tưởng hồ sơ bị mất, hoang mang và mất niềm tin.
+
+Phần 2: Sửa lỗi
+
+3. Biên bản viết lại
+
+- Bước 1 (DNS): trình duyệt hỏi DNS để đổi carepulse.vn thành IP máy chủ.
+- Bước 2 (TCP/TLS): bắt tay TCP 3 bước, rồi TLS để mã hóa HTTPS.
+- Bước 3 (HTTP): gửi request lấy kết quả, database sập nên server trả 500 Internal Server Error. Hồ sơ bệnh nhân vẫn còn.
+- Bước 4 (Rendering): trình duyệt dựng HTML thành DOM Tree, CSS thành CSSOM, rồi Layout và Paint. Không có dữ liệu nên bảng trống kèm thông báo lỗi.
+- Xử lý: báo đội backend khôi phục database, báo bệnh nhân hồ sơ vẫn an toàn và thử lại sau.
+
+4. Vì sao sửa Tab Elements không lưu trên server
+
+- Tab Elements chỉ sửa DOM nằm trong RAM tạm của máy mình.
+- Việc sửa không gửi gì lên server nên database không đổi.
+- F5 thì trình duyệt tải lại dữ liệu gốc từ server đè lên nên chữ sửa mất.
